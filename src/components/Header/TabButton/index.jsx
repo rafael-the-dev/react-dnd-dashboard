@@ -13,7 +13,7 @@ const TabButton = ({ label, tabID }) => {
 
     return (
         <Button
-            className={classNames(classes.defaultButton, `border-0 rounded-none py-2.5`)}
+            className={classNames(classes.defaultButton, `border-0 rounded-none py-2.5 sm:shadow-none`)}
             endIcon={<KeyboardArrowDownIcon className={classNames({'rotate-180': openedTab === tabID })} />}
             onClick={tabClickHanlder(tabID)}
             variant="contained">

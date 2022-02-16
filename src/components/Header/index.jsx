@@ -1,4 +1,4 @@
-import { Chip, Collapse, IconButton, Typography } from '@mui/material';
+import { Chip, Collapse, Hidden, IconButton, Typography } from '@mui/material';
 import classNames from 'classnames'
 import { useGlobalStyles } from '../../styles';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -35,61 +35,75 @@ const Header = () => {
                     DnD Dashboard
                 </Typography>
                 <div>
-                    <IconButton onClick={toggleOpen}>
-                        { open ? <CloseIcon />  : <MenuIcon /> }
-                    </IconButton>
+                    <Hidden smUp>
+                        <IconButton onClick={toggleOpen}>
+                            { open ? <CloseIcon />  : <MenuIcon /> }
+                        </IconButton>
+                    </Hidden>
+                    <Hidden smDown>
+                        { buttons }
+                    </Hidden>
                 </div>
             </div>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                { buttons }
-            </Collapse>
-            <Collapse in={ tabsID.columns === openedTab }>
-                <div className={classNames(classes.chipsContainer, `flex flex-wrap items-center py-4 px-2.5`)}>
-                    <Chip   
-                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
-                        label="Vertical table" 
-                        variant="outlined"
-                    />
-                    <Chip 
-                        className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
-                        label="horizontal table" 
-                        variant="outlined"
-                    />
-                    <Chip   
-                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
-                        label="Vertical table" 
-                        variant="outlined"
-                    />
-                    <Chip 
-                        className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
-                        label="horizontal table" 
-                        variant="outlined"
-                    />
-                </div>
-            </Collapse>
-            <Collapse in={ tabsID.tables === openedTab }>
-                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
-                    <Chip   
-                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
-                        label="Vertical table" 
-                        variant="outlined"
-                    />
-                    <Chip 
-                        className={classNames('text-base border-blue-700 text-blue-700')}
-                        label="horizontal table" 
-                        variant="outlined"
-                    />
-                </div>
-            </Collapse>
-            <Collapse in={ tabsID.graphs === openedTab }>
-                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
-                    <Chip   
-                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
-                        label="Vertical table" 
-                        variant="outlined"
-                    />
-                </div>
-            </Collapse>
+            <Hidden smUp>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    { buttons }
+                </Collapse>
+            </Hidden>
+            
+                <>
+                     <Collapse in={ tabsID.columns === openedTab }>
+                        <div className={classNames(classes.chipsContainer, `flex flex-wrap items-center py-4 px-2.5
+                            sm:justify-end`)}>
+                            <Chip   
+                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
+                                label="Vertical table" 
+                                variant="outlined"
+                            />
+                            <Chip 
+                                className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
+                                label="horizontal table" 
+                                variant="outlined"
+                            />
+                            <Chip   
+                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
+                                label="Vertical table" 
+                                variant="outlined"
+                            />
+                            <Chip 
+                                className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
+                                label="horizontal table" 
+                                variant="outlined"
+                            />
+                        </div>
+                    </Collapse>
+                    <Collapse in={ tabsID.tables === openedTab }>
+                        <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5
+                            sm:justify-end`)}>
+                            <Chip   
+                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
+                                label="Vertical table" 
+                                variant="outlined"
+                            />
+                            <Chip 
+                                className={classNames('text-base border-blue-700 text-blue-700')}
+                                label="horizontal table" 
+                                variant="outlined"
+                            />
+                        </div>
+                    </Collapse>
+                    <Collapse in={ tabsID.graphs === openedTab }>
+                        <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5
+                            sm:justify-end`)}>
+                            <Chip   
+                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
+                                label="Vertical table" 
+                                variant="outlined"
+                            />
+                        </div>
+                    </Collapse>
+                </>
+            
         </header>
     );
 };
