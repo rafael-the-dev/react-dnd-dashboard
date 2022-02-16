@@ -7,16 +7,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemTypes } from '../../config'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import data from '../../sales.json'
+import classNames from 'classnames'
 
 const DefaultTable = () => {
     const [ columnsList, setColumnsList ] = useState(['', '', '']);
+    const isFirstRender = useRef(true);
 
     const [, drop] = useDrop(
         () => ({
             accept: ItemTypes.SALE_COLUMN,
             drop: (item) => {
                 console.log(item);
+                isFirstRender.current = false;
                 setColumnsList(list => {
                     return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
                 });
@@ -36,10 +40,27 @@ const DefaultTable = () => {
                 ))
             }
         </TableRow>
+    ), [ columnsList ]);
+
+    const rowsList = useMemo(() => (
+        isFirstRender.current ? [] : data.map((row, index) => (
+            <TableRow key={index}>
+                {
+                    columnsList.map((column, columnIndex) => (
+                        <TableCell 
+                            align="center"
+                            key={`${index}${columnIndex}`}>
+                            { row[column] }
+                        </TableCell>
+                    ))
+                }
+            </TableRow>
+        ))
     ), [ columnsList ])
 
     return (
         <TableContainer 
+            className={classNames(`overflow-auto`)}
             component={Paper}
             elevation={0}>
             <Table 
@@ -48,6 +69,9 @@ const DefaultTable = () => {
                 <TableHead>
                     { columnsListMemo }
                 </TableHead>
+                <TableBody>
+                    { rowsList }
+                </TableBody>
             </Table>
         </TableContainer>
     );
