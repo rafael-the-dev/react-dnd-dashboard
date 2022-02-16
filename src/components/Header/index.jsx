@@ -29,7 +29,7 @@ const Header = () => {
                     component="h1"
                     variant="h5"
                 >
-                    Dashboard
+                    DnD Dashboard
                 </Typography>
                 <div>
                     <IconButton onClick={toggleOpen}>
