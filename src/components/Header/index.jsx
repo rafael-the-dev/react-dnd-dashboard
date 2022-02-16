@@ -1,24 +1,25 @@
-import { Button, Collapse, IconButton, Typography } from '@mui/material';
+import { Collapse, IconButton, Typography } from '@mui/material';
 import classNames from 'classnames'
 import { useGlobalStyles } from '../../styles';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import TabButton from './TabButton'
+import { HeaderContext } from '../../context/HeaderContext';
 
 const Header = () => {
     const globalStyles = useGlobalStyles();
-
+    const { tabsID } = useContext(HeaderContext);
     const [ open, setOpen ] = useState(false);
 
     const toggleOpen = useCallback(() => setOpen(o => !o), []);
     const buttons = useMemo(() => (
         <div className={classNames(`flex items-stretch mt-2`)}>
-            <TabButton label="Columns" />
-            <TabButton label="Tables" />
-            <TabButton label="Graphs" />
+            <TabButton label="Columns" tabID={tabsID.colums} />
+            <TabButton label="Tables" tabID={tabsID.tables} />
+            <TabButton label="Graphs" tabID={tabsID.graphs} />
         </div>
-    ), []);
+    ), [ tabsID ]);
 
     return (
         <header className={classNames(globalStyles.px, `py-4`)}>

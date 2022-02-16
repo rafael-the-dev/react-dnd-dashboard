@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { StylesProvider } from '@mui/styles';
 import { AppContextProvider } from '../../context/AppContext';
 import loadable from '@loadable/component';
+import { HeaderContextProvider } from "../../context/HeaderContext";
 
 const App = () => {
     const theme = createTheme();
@@ -16,7 +17,9 @@ const App = () => {
                 <ThemeProvider theme={theme}>
                     <AppContextProvider>
                         <Router>
-                            <Header />
+                            <HeaderContextProvider>
+                                <Header />
+                            </HeaderContextProvider>
                             <Routes>
                                 <Route exact path="/" element={<HomePage />} />
                             </Routes>
