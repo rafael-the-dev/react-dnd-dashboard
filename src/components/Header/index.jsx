@@ -1,4 +1,4 @@
-import { Collapse, IconButton, Typography } from '@mui/material';
+import { Chip, Collapse, IconButton, Typography } from '@mui/material';
 import classNames from 'classnames'
 import { useGlobalStyles } from '../../styles';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -6,10 +6,13 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import TabButton from './TabButton'
 import { HeaderContext } from '../../context/HeaderContext';
+import { useStyles } from './styles'
 
 const Header = () => {
+    const classes = useStyles();
     const globalStyles = useGlobalStyles();
-    const { tabsID } = useContext(HeaderContext);
+
+    const { openedTab, tabsID } = useContext(HeaderContext);
     const [ open, setOpen ] = useState(false);
 
     const toggleOpen = useCallback(() => setOpen(o => !o), []);
@@ -39,6 +42,20 @@ const Header = () => {
             </div>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 { buttons }
+            </Collapse>
+            <Collapse in={ tabsID.tables === openedTab }>
+                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
+                    <Chip   
+                        className={classNames('mr-2.5 text-base')}
+                        label="Vertical table" 
+                        variant="outlined"
+                    />
+                    <Chip 
+                        className={classNames('text-base')}
+                        label="horizontal table" 
+                        variant="outlined"
+                    />
+                </div>
             </Collapse>
         </header>
     );
