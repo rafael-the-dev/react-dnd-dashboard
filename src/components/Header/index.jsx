@@ -12,10 +12,14 @@ const Header = () => {
     const classes = useStyles();
     const globalStyles = useGlobalStyles();
 
-    const { openedTab, tabsID } = useContext(HeaderContext);
+    const { tabClickHanlder, openedTab, tabsID } = useContext(HeaderContext);
     const [ open, setOpen ] = useState(false);
 
-    const toggleOpen = useCallback(() => setOpen(o => !o), []);
+    const toggleOpen = useCallback(() => {
+            setOpen(o => !o);
+            tabClickHanlder('')();
+    }, [ tabClickHanlder ]);
+    
     const buttons = useMemo(() => (
         <div className={classNames(`flex items-stretch mt-2`)}>
             <TabButton label="Columns" tabID={tabsID.columns} />
@@ -61,7 +65,7 @@ const Header = () => {
                                 variant="outlined"
                             />
                             <Chip 
-                                className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
+                                className={classNames('text-base mr-2.5 border-blue-700 text-blue-700 mb-3.5')}
                                 label="horizontal table" 
                                 variant="outlined"
                             />
@@ -71,7 +75,7 @@ const Header = () => {
                                 variant="outlined"
                             />
                             <Chip 
-                                className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
+                                className={classNames('text-base mr-2.5 border-blue-700 text-blue-700 mb-3.5')}
                                 label="horizontal table" 
                                 variant="outlined"
                             />
