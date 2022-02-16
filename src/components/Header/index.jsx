@@ -8,6 +8,7 @@ import TabButton from './TabButton'
 import { HeaderContext } from '../../context/HeaderContext';
 import { useStyles } from './styles'
 import data from '../../sales.json'
+import ColumnChip from './ColumnChip';
 
 const Header = () => {
     const classes = useStyles();
@@ -41,12 +42,10 @@ const Header = () => {
         return columnsNames
             .filter(column => Boolean(column))
             .map((column, index) => (
-            <Chip   
-                className={classNames('capitalize mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
+            <ColumnChip
+                column={column}
                 key={index}
-                label={column} 
-                variant="outlined"
-            />
+             />
         ))
     }, []);
 
