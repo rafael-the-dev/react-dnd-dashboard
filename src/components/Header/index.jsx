@@ -18,7 +18,7 @@ const Header = () => {
     const toggleOpen = useCallback(() => setOpen(o => !o), []);
     const buttons = useMemo(() => (
         <div className={classNames(`flex items-stretch mt-2`)}>
-            <TabButton label="Columns" tabID={tabsID.colums} />
+            <TabButton label="Columns" tabID={tabsID.columns} />
             <TabButton label="Tables" tabID={tabsID.tables} />
             <TabButton label="Graphs" tabID={tabsID.graphs} />
         </div>
@@ -43,16 +43,49 @@ const Header = () => {
             <Collapse in={open} timeout="auto" unmountOnExit>
                 { buttons }
             </Collapse>
-            <Collapse in={ tabsID.tables === openedTab }>
-                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
+            <Collapse in={ tabsID.columns === openedTab }>
+                <div className={classNames(classes.chipsContainer, `flex flex-wrap items-center py-4 px-2.5`)}>
                     <Chip   
-                        className={classNames('mr-2.5 text-base')}
+                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
                         label="Vertical table" 
                         variant="outlined"
                     />
                     <Chip 
-                        className={classNames('text-base')}
+                        className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
                         label="horizontal table" 
+                        variant="outlined"
+                    />
+                    <Chip   
+                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
+                        label="Vertical table" 
+                        variant="outlined"
+                    />
+                    <Chip 
+                        className={classNames('text-base border-blue-700 text-blue-700 mb-3.5')}
+                        label="horizontal table" 
+                        variant="outlined"
+                    />
+                </div>
+            </Collapse>
+            <Collapse in={ tabsID.tables === openedTab }>
+                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
+                    <Chip   
+                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
+                        label="Vertical table" 
+                        variant="outlined"
+                    />
+                    <Chip 
+                        className={classNames('text-base border-blue-700 text-blue-700')}
+                        label="horizontal table" 
+                        variant="outlined"
+                    />
+                </div>
+            </Collapse>
+            <Collapse in={ tabsID.graphs === openedTab }>
+                <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5`)}>
+                    <Chip   
+                        className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
+                        label="Vertical table" 
                         variant="outlined"
                     />
                 </div>
