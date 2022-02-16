@@ -2,11 +2,12 @@ import { Chip, Collapse, Hidden, IconButton, Typography } from '@mui/material';
 import classNames from 'classnames'
 import { useGlobalStyles } from '../../styles';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close';
 import TabButton from './TabButton'
 import { HeaderContext } from '../../context/HeaderContext';
 import { useStyles } from './styles'
+import data from '../../sales.json'
 
 const Header = () => {
     const classes = useStyles();
@@ -27,6 +28,30 @@ const Header = () => {
             <TabButton label="Graphs" tabID={tabsID.graphs} />
         </div>
     ), [ tabsID ]);
+
+    const createColumns = useMemo(() => {
+        let columnsNames = [];
+        data.forEach(item => {
+            Object.keys(item).forEach(key => {
+                if(!columnsNames.includes(key)) {
+                    columnsNames.push(key)
+                }
+            })
+        })
+        return columnsNames
+            .filter(column => Boolean(column))
+            .map((column, index) => (
+            <Chip   
+                className={classNames('capitalize mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
+                key={index}
+                label={column} 
+                variant="outlined"
+            />
+        ))
+    }, []);
+
+    //useEffect(() => console.log(createColumns), [ createColumns ])
+
 
     return (
         <header className={classNames(globalStyles.px, `py-4`)}>
@@ -57,28 +82,9 @@ const Header = () => {
             
                 <>
                      <Collapse in={ tabsID.columns === openedTab }>
-                        <div className={classNames(classes.chipsContainer, `flex flex-wrap items-center py-4 px-2.5
+                        <div className={classNames(classes.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
                             sm:justify-end`)}>
-                            <Chip   
-                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
-                                label="Vertical table" 
-                                variant="outlined"
-                            />
-                            <Chip 
-                                className={classNames('text-base mr-2.5 border-blue-700 text-blue-700 mb-3.5')}
-                                label="horizontal table" 
-                                variant="outlined"
-                            />
-                            <Chip   
-                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700 mb-3.5')}
-                                label="Vertical table" 
-                                variant="outlined"
-                            />
-                            <Chip 
-                                className={classNames('text-base mr-2.5 border-blue-700 text-blue-700 mb-3.5')}
-                                label="horizontal table" 
-                                variant="outlined"
-                            />
+                            { createColumns }
                         </div>
                     </Collapse>
                     <Collapse in={ tabsID.tables === openedTab }>
