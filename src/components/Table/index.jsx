@@ -10,10 +10,13 @@ import { ItemTypes } from '../../config'
 import { useMemo, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
+import { TablePagination } from '@mui/material';
 
 const DefaultTable = () => {
     const [ columnsList, setColumnsList ] = useState(['', '', '']);
     const isFirstRender = useRef(true);
+    const [ rowsPerPage, setRowsPerPage ] = useState(5);
+    const [ page, setPage ] = useState(0);
 
     const [, drop] = useDrop(
         () => ({
@@ -32,6 +35,15 @@ const DefaultTable = () => {
         []
     );
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
     const columnsListMemo = useMemo(() => (
         <TableRow>
             {
@@ -43,7 +55,7 @@ const DefaultTable = () => {
     ), [ columnsList ]);
 
     const rowsList = useMemo(() => (
-        isFirstRender.current ? [] : data.map((row, index) => (
+        isFirstRender.current ? [] : data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
             <TableRow key={index}>
                 {
                     columnsList.map((column, columnIndex) => (
@@ -56,24 +68,37 @@ const DefaultTable = () => {
                 }
             </TableRow>
         ))
-    ), [ columnsList ])
+    ), [ columnsList, page, rowsPerPage ])
 
     return (
-        <TableContainer 
-            className={classNames(`overflow-auto`)}
-            component={Paper}
+        <Paper 
+            className={classNames(`w-full mb-4`)}
             elevation={0}>
-            <Table 
-                aria-label="table"
-                ref={drop}>
-                <TableHead>
-                    { columnsListMemo }
-                </TableHead>
-                <TableBody>
-                    { rowsList }
-                </TableBody>
-            </Table>
-        </TableContainer>
+            <TableContainer 
+                className={classNames(`overflow-auto`)}
+                >
+                <Table 
+                    aria-label="table"
+                    sx={{ minWidth: 120 }}
+                    ref={drop}>
+                    <TableHead>
+                        { columnsListMemo }
+                    </TableHead>
+                    <TableBody>
+                        { rowsList }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
+                component="div"
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Paper>
     );
 };
 
