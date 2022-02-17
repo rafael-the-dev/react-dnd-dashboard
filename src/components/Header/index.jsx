@@ -9,6 +9,7 @@ import { HeaderContext } from '../../context/HeaderContext';
 import { useStyles } from './styles'
 import data from '../../sales.json'
 import ColumnChip from './ColumnChip';
+import TableChip from './TableChip';
 
 const Header = () => {
     const classes = useStyles();
@@ -87,18 +88,10 @@ const Header = () => {
                         </div>
                     </Collapse>
                     <Collapse in={ tabsID.tables === openedTab }>
-                        <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5
+                        <div className={classNames(classes.chipsContainer, `flex items-center pt-4 pb-2 px-2.5
                             sm:justify-end`)}>
-                            <Chip   
-                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
-                                label="Vertical table" 
-                                variant="outlined"
-                            />
-                            <Chip 
-                                className={classNames('text-base border-blue-700 text-blue-700')}
-                                label="horizontal table" 
-                                variant="outlined"
-                            />
+                                <TableChip label="vertical-table" />
+                                <TableChip label="horizontal-table" />
                         </div>
                     </Collapse>
                     <Collapse in={ tabsID.graphs === openedTab }>

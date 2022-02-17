@@ -1,3 +1,4 @@
 export const ItemTypes = {
-    SALE_COLUMN: 'sale-column'
+    SALE_COLUMN: 'sale-column',
+    TABLE: 'table'
   }

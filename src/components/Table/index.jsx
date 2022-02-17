@@ -48,7 +48,11 @@ const DefaultTable = () => {
         <TableRow>
             {
                 columnsList.map((column, index) => (
-                    <TableCell align="center">{ column }</TableCell>
+                    <TableCell 
+                        align="center" 
+                        className={classNames(`bg-blue-800 text-slate-50`)}>
+                        { column }
+                    </TableCell>
                 ))
             }
         </TableRow>
@@ -72,7 +76,7 @@ const DefaultTable = () => {
 
     return (
         <Paper 
-            className={classNames(`w-full mb-4`)}
+            className={classNames(`w-fit max-w-full mb-4`)}
             elevation={0}>
             <TableContainer 
                 className={classNames(`overflow-auto`)}
