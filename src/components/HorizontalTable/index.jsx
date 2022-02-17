@@ -12,7 +12,7 @@ import data from '../../sales.json'
 import classNames from 'classnames'
 import { TablePagination } from '@mui/material';
 
-const DefaultTable = () => {
+const DefaultTable = ({ componentID }) => {
     const [ columnsList, setColumnsList ] = useState(['', '']);
     const isFirstRender = useRef(true);
     const [ rowsPerPage, setRowsPerPage ] = useState(5);
@@ -20,11 +20,11 @@ const DefaultTable = () => {
 
     const [ , drag ] = useDrag(() => ({
         type: ItemTypes.HORIZONTAL_TABLE,
-        item: { columns: columnsList, type: ItemTypes.HORIZONTAL_TABLE },
+        item: { columns: columnsList, componentID, type: ItemTypes.HORIZONTAL_TABLE },
         collect: (monitor) => ({
           isDragging: !!monitor.isDragging()
         })
-    }), [ columnsList ]);
+    }), [ columnsList, componentID ]);
 
     const [, drop] = useDrop(
         () => ({
