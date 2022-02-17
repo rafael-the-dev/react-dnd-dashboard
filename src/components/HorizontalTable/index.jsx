@@ -1,4 +1,4 @@
-import { useDrop } from 'react-dnd'
+import { useDrag, useDrop } from 'react-dnd'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,15 +18,27 @@ const DefaultTable = () => {
     const [ rowsPerPage, setRowsPerPage ] = useState(5);
     const [ page, setPage ] = useState(0);
 
+    const [ , drag ] = useDrag(() => ({
+        type: ItemTypes.HORIZONTAL_TABLE,
+        item: { columns: columnsList, type: ItemTypes.HORIZONTAL_TABLE },
+        collect: (monitor) => ({
+          isDragging: !!monitor.isDragging()
+        })
+    }), [ columnsList ]);
+
     const [, drop] = useDrop(
         () => ({
-            accept: ItemTypes.SALE_COLUMN,
+            accept: [ ItemTypes.SALE_COLUMN, ItemTypes.VERTICAL_TABLE ],
             drop: (item) => {
                 console.log(item);
                 isFirstRender.current = false;
-                setColumnsList(list => {
-                    return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
-                });
+                if(item.type === ItemTypes.VERTICAL_TABLE) {
+                    setColumnsList(item.columns);
+                } else if(Boolean(item.column)) {
+                    setColumnsList(list => {
+                        return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
+                    });
+                }
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
@@ -123,7 +135,8 @@ const DefaultTable = () => {
     return (
         <Paper 
             className={classNames(`w-fit max-w-full mb-6 mr-6`)}
-            elevation={0}>
+            elevation={0}
+            ref={drag}>
             <TableContainer 
                 className={classNames(`overflow-auto`)}
                 >
