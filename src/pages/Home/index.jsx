@@ -15,6 +15,12 @@ const Home = () => {
         () => ({
             accept: ItemTypes.TABLE,
             drop: (item) => {
+                setComponents(list => {
+                    if(item.type === 'vertical-table') {
+                        return [ ...list, <Table key={list.length + 1} />]
+                    }
+                    return list;
+                })
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
@@ -25,7 +31,7 @@ const Home = () => {
 
     return (
         <main 
-            className={classNames(globalStyles.px, `py-12`)}
+            className={classNames(globalStyles.px, `py-12 flex flex-wrap`)}
             ref={drop}>
             {
                 components

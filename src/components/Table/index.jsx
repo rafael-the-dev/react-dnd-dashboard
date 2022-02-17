@@ -76,7 +76,7 @@ const DefaultTable = () => {
 
     return (
         <Paper 
-            className={classNames(`w-fit max-w-full mb-4`)}
+            className={classNames(`w-fit max-w-full mb-6 mr-6`)}
             elevation={0}>
             <TableContainer 
                 className={classNames(`overflow-auto`)}

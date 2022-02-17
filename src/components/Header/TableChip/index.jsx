@@ -6,7 +6,7 @@ import { ItemTypes } from '../../../config'
 const TableChip = ({ label }) => {
     const [ , drag ] = useDrag(() => ({
         type: ItemTypes.TABLE,
-        item: { label },
+        item: { type: label },
         collect: (monitor) => ({
           isDragging: !!monitor.isDragging()
         })
