@@ -11,8 +11,11 @@ import { useMemo, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
 import { TablePagination } from '@mui/material';
+import { useGlobalStyles } from '../../styles'
 
 const DefaultTable = ({ componentID }) => {
+    const globalStyles = useGlobalStyles();
+
     const [ columnsList, setColumnsList ] = useState(['', '', '']);
     const isFirstRender = useRef(true);
     const [ rowsPerPage, setRowsPerPage ] = useState(5);
@@ -85,37 +88,64 @@ const DefaultTable = ({ componentID }) => {
                 }
             </TableRow>
         ))
-    ), [ columnsList, page, rowsPerPage ])
+    ), [ columnsList, page, rowsPerPage ]);
+
+    let startX, startY, startWidth, startHeight;
+    const paperRef = useRef(null);
+
+    const initDrag = (e) => {
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(paperRef.current).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(paperRef.current).height, 10);
+        document.documentElement.addEventListener('mousemove', doDrag, false);
+        document.documentElement.addEventListener('mouseup', stopDrag, false);
+    };
+
+    const doDrag = (e) => {
+        paperRef.current.style.width = (startWidth + e.clientX - startX) + 'px';
+        paperRef.current.style.height = (startHeight + e.clientY - startY) + 'px';
+    }
+     
+    const stopDrag = (e) => {
+        document.documentElement.removeEventListener('mousemove', doDrag, false);    
+        document.documentElement.removeEventListener('mouseup', stopDrag, false);
+    }
 
     return (
         <Paper 
-            className={classNames(`w-fit max-w-full mb-6 mr-6`)}
+            className={classNames(`w-fit max-w-full mb-6 mr-6 relative`)}
             elevation={0}
-            ref={drag}>
-            <TableContainer 
-                className={classNames(`overflow-auto`)}
-                >
-                <Table 
-                    aria-label="table"
-                    sx={{ minWidth: 50 }}
-                    ref={drop}>
-                    <TableHead>
-                        { columnsListMemo }
-                    </TableHead>
-                    <TableBody>
-                        { rowsList }
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
-                component="div"
-                count={data.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            ref={paperRef}>
+            <div ref={drag} className={classNames(`w-full h-full flex flex-col items-stretch`)}>
+                <TableContainer 
+                    className={classNames(``)}
+                    >
+                    <Table 
+                        aria-label="table"
+                        sx={{ minWidth: 50 }}
+                        ref={drop}>
+                        <TableHead>
+                            { columnsListMemo }
+                        </TableHead>
+                        <TableBody>
+                            { rowsList }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
+                    component="div"
+                    count={data.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+            <div 
+                className={classNames(globalStyles.resizer)}
+                onMouseDown={initDrag}></div>
         </Paper>
     );
 };
