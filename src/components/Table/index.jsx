@@ -10,9 +10,10 @@ import { ItemTypes } from '../../config'
 import { useMemo, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
-import { TablePagination } from '@mui/material';
+import { IconButton, TablePagination } from '@mui/material';
 import { useGlobalStyles } from '../../styles'
 import nextId from "react-id-generator";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const DefaultTable = ({ componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -67,20 +68,23 @@ const DefaultTable = ({ componentID }) => {
                 columnsList.map((column, index) => (
                     <TableCell 
                         align="center" 
-                        className={classNames(`bg-blue-800 text-slate-50`)}
-                        key={index}>
+                        className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50 relative`)}
+                        key={nextId('vth')}>
                         { column }
+                        <IconButton className={classNames('ml-2 text-red-600 p-0 absolute right-2 hidden table__header-button')}>
+                            <DeleteIcon />
+                        </IconButton>
                     </TableCell>
                 ))
             }
         </TableRow>
-    ), [ columnsList ]);
+    ), [ columnsList, globalStyles ]);
 
     const rowsList = useMemo(() => (
         isFirstRender.current ? [] : data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
             <TableRow key={index}>
                 {
-                    columnsList.map((column, columnIndex) => (
+                    columnsList.map((column) => (
                         <TableCell 
                             align="center"
                             key={nextId('vt')}>

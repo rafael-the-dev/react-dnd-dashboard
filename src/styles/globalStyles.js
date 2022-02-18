@@ -17,5 +17,10 @@ export const useGlobalStyles = makeStyles(theme => ({
         position: 'absolute',
         right: 0,
         width: 10, 
+    },
+    tableHeader: {
+        '&:hover .table__header-button': {
+            display: 'inline-block !important'
+        }
     }
 }));
