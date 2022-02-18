@@ -9,6 +9,7 @@ import { useMemo, useRef, useState } from 'react'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AreaChart from '../../components/AreaChart'
+import nextId from "react-id-generator";
 
 const Home = () => {
     const classes = useStyles();
@@ -20,7 +21,7 @@ const Home = () => {
             accept: [ ItemTypes.AREA_CHART, ItemTypes.HORIZONTAL_TABLE, ItemTypes.VERTICAL_TABLE ],
             drop: (item) => {
                 console.log(item)
-                setComponents(list => list.filter(element => parseInt(element.key) !== item.componentID))
+                setComponents(list => list.filter(element => element.key !== item.componentID))
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
@@ -34,7 +35,7 @@ const Home = () => {
             accept: [ ItemTypes.CHART, ItemTypes.TABLE ],
             drop: (item) => {
                 setComponents(list => {
-                    const id = list.length + 1;
+                    const id = nextId();
                     if(item.type === 'vertical-table') {
                         return [ ...list, <Table componentID={id} key={id} />]
                     } else if(item.type === 'horizontal-table'){

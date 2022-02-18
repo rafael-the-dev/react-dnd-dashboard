@@ -12,6 +12,7 @@ import data from '../../sales.json'
 import classNames from 'classnames'
 import { TablePagination } from '@mui/material';
 import { useGlobalStyles } from '../../styles'
+import nextId from "react-id-generator";
 
 const DefaultTable = ({ componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -66,7 +67,8 @@ const DefaultTable = ({ componentID }) => {
                 columnsList.map((column, index) => (
                     <TableCell 
                         align="center" 
-                        className={classNames(`bg-blue-800 text-slate-50`)}>
+                        className={classNames(`bg-blue-800 text-slate-50`)}
+                        key={index}>
                         { column }
                     </TableCell>
                 ))
@@ -81,7 +83,7 @@ const DefaultTable = ({ componentID }) => {
                     columnsList.map((column, columnIndex) => (
                         <TableCell 
                             align="center"
-                            key={`${index}${columnIndex}`}>
+                            key={nextId('vt')}>
                             { row[column] }
                         </TableCell>
                     ))

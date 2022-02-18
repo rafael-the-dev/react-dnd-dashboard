@@ -11,6 +11,7 @@ import { useMemo, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
 import { TablePagination } from '@mui/material';
+import nextId from "react-id-generator";
 
 const DefaultTable = ({ componentID }) => {
     const [ columnsList, setColumnsList ] = useState(['', '']);
@@ -108,7 +109,7 @@ const DefaultTable = ({ componentID }) => {
                         list.map((row, index) => (
                             <TableCell 
                                 align="center"
-                                key={`${columnIndex}${index}`}>
+                                key={nextId('hz')}>
                                 { row[column] }
                             </TableCell>
                         ))
