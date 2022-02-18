@@ -8,6 +8,7 @@ import { ItemTypes } from '../../config'
 import { useMemo, useRef, useState } from 'react'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AreaChart from '../../components/AreaChart'
 
 const Home = () => {
     const classes = useStyles();
@@ -69,6 +70,7 @@ const Home = () => {
                 {
                     components
                 }
+                <AreaChart />
             </div>
         </main>
     );

@@ -1,4 +1,5 @@
 export const ItemTypes = {
+    CHART: 'chart',
     HORIZONTAL_TABLE: 'horizontal-table',
     SALE_COLUMN: 'sale-column',
     TABLE: 'table',
