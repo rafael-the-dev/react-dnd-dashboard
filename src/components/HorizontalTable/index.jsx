@@ -6,12 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemTypes } from '../../config'
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
-import { TablePagination } from '@mui/material';
+import { IconButton, TablePagination } from '@mui/material';
 import { useGlobalStyles } from '../../styles'
 import nextId from "react-id-generator";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const DefaultTable = ({ componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -82,6 +83,13 @@ const DefaultTable = ({ componentID }) => {
         </>
     ), [])
 
+    const removeHeader = useCallback(prop => () => {
+        setColumnsList(list => {
+            const result = list.filter(item => item !== prop);
+            return result.length > 0 ? result : [ '' ];
+        });
+    }, []);
+
     const rowsList = useMemo(() => {
         const list = data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage);
         return isFirstRender.current ? emptyTable : (
@@ -89,12 +97,21 @@ const DefaultTable = ({ componentID }) => {
                 <TableRow key={columnIndex}>
                     <TableCell 
                         align="center"
-                        className={classNames(`bg-blue-800 text-slate-50`)}
+                        className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50`)}
                         key={columnIndex}>
-                        { column }
+                        <div classNames={classNames(`flex items-center justify-center`)}>
+                            { column }
+                            { 
+                                Boolean(column) && <IconButton 
+                                    className={classNames(`ml-2 text-red-600 p-0 opacity-0 table__header-button`)}
+                                    onClick={removeHeader(column)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            }
+                        </div>
                     </TableCell>
                     {
-                        list.map((row, index) => (
+                        Boolean(column) && list.map((row, index) => (
                             <TableCell 
                                 align="center"
                                 key={nextId('hz')}>
@@ -105,12 +122,14 @@ const DefaultTable = ({ componentID }) => {
                 </TableRow>
             )
         ))
-    }, [ columnsList, emptyTable, page, rowsPerPage ])
+    }, [ columnsList, emptyTable, globalStyles, page, removeHeader, rowsPerPage ])
 
     data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
         <TableRow key={index}>
             {
-                columnsList.map((column, columnIndex) => (
+                columnsList
+                .filter(column => Boolean(column))
+                .map((column, columnIndex) => (
                     <TableCell 
                         align="center"
                         key={`${index}${columnIndex}`}>

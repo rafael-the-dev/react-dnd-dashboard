@@ -20,7 +20,8 @@ export const useGlobalStyles = makeStyles(theme => ({
     },
     tableHeader: {
         '&:hover .table__header-button': {
-            display: 'inline-block !important'
+            opacity: '1 !important',
+            fontSize: '1.3rem'
         }
     }
 }));
