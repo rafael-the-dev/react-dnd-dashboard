@@ -17,7 +17,7 @@ const Home = () => {
 
     const [, deleteDropRef ] = useDrop(
         () => ({
-            accept: [ ItemTypes.HORIZONTAL_TABLE, ItemTypes.VERTICAL_TABLE ],
+            accept: [ ItemTypes.AREA_CHART, ItemTypes.HORIZONTAL_TABLE, ItemTypes.VERTICAL_TABLE ],
             drop: (item) => {
                 console.log(item)
                 setComponents(list => list.filter(element => parseInt(element.key) !== item.componentID))
@@ -31,7 +31,7 @@ const Home = () => {
 
     const [, drop] = useDrop(
         () => ({
-            accept: [ ItemTypes.TABLE ],
+            accept: [ ItemTypes.CHART, ItemTypes.TABLE ],
             drop: (item) => {
                 setComponents(list => {
                     const id = list.length + 1;
@@ -39,6 +39,8 @@ const Home = () => {
                         return [ ...list, <Table componentID={id} key={id} />]
                     } else if(item.type === 'horizontal-table'){
                         return [ ...list, <HorizontalTable componentID={id} key={id} />]
+                    } else if(item.type === ItemTypes.AREA_CHART) {
+                        return [ ...list, <AreaChart componentID={id} key={id} /> ]
                     }
 
                     return list;
@@ -70,7 +72,6 @@ const Home = () => {
                 {
                     components
                 }
-                <AreaChart />
             </div>
         </main>
     );

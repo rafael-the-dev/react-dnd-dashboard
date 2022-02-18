@@ -4,12 +4,22 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import data from  '../../sales.json'
 import { useGlobalStyles } from '../../styles'
 import classNames from 'classnames'
+import { useDrag, useDrop } from 'react-dnd'
+import { ItemTypes } from '../../config'
 
-const AreaChartContainer = () => {
+const AreaChartContainer = ({ componentID }) => {
     const globalStyles = useGlobalStyles();
 
     let startX, startY, startWidth, startHeight;
     const paperRef = useRef(null);
+
+    const [ , drag ] = useDrag(() => ({
+        type: ItemTypes.AREA_CHART,
+        item: { componentID, type: ItemTypes.AREA_CHART },
+        collect: (monitor) => ({
+          isDragging: !!monitor.isDragging()
+        })
+    }), [ componentID ]);
 
     const initDrag = (e) => {
         startX = e.clientX;
@@ -20,12 +30,12 @@ const AreaChartContainer = () => {
         document.documentElement.addEventListener('mouseup', stopDrag, false);
     };
 
-    function doDrag(e) {
+    const doDrag = (e) => {
         paperRef.current.style.width = (startWidth + e.clientX - startX) + 'px';
         paperRef.current.style.height = (startHeight + e.clientY - startY) + 'px';
     }
      
-     function stopDrag(e) {
+    const stopDrag = (e) => {
         document.documentElement.removeEventListener('mousemove', doDrag, false);    
         document.documentElement.removeEventListener('mouseup', stopDrag, false);
     }
@@ -33,10 +43,10 @@ const AreaChartContainer = () => {
 
     return (
         <Paper 
-            className={classNames(globalStyles.chartSize, `relative`)}
+            className={classNames(globalStyles.chartSize, `relative mb-6 mr-6`)}
             elevation={0}
             ref={paperRef}>
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer ref={drag} width="100%" height="100%">
                     <AreaChart
                         width={500}
                         height={400}

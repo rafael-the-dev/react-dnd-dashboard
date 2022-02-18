@@ -10,6 +10,7 @@ import { useStyles } from './styles'
 import data from '../../sales.json'
 import ColumnChip from './ColumnChip';
 import TableChip from './TableChip';
+import ChartChip from './ChartChip';
 
 const Header = () => {
     const classes = useStyles();
@@ -95,13 +96,12 @@ const Header = () => {
                         </div>
                     </Collapse>
                     <Collapse in={ tabsID.graphs === openedTab }>
-                        <div className={classNames(classes.chipsContainer, `flex items-center py-4 px-2.5
+                        <div className={classNames(classes.chipsContainer, `flex items-center pt-4 pb-2 px-2.5
                             sm:justify-end`)}>
-                            <Chip   
-                                className={classNames('mr-2.5 text-base border-blue-700 text-blue-700')}
-                                label="Vertical table" 
-                                variant="outlined"
-                            />
+                            <ChartChip label="area-chart" />
+                            <ChartChip label="bar-chart" />
+                            <ChartChip label="line-chart" />
+                            <ChartChip label="pie-chart" />
                         </div>
                     </Collapse>
                 </>

@@ -6,9 +6,8 @@ export const useGlobalStyles = makeStyles(theme => ({
         paddingRight: '5%',
     },
     chartSize: {
-        minHeight: 250,
-        resize: 'both',
-        minWidth: 300
+        height: 250,
+        width: 300
     },
     resizer : { 
         bottom: 0,
