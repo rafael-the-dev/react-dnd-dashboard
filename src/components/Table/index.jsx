@@ -95,7 +95,7 @@ const DefaultTable = ({ componentID }) => {
 
     const rowsList = useMemo(() => (
         isFirstRender.current ? [] : data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
-            <TableRow key={index}>
+            <TableRow key={index} className={classNames(globalStyles.tableRow)}>
                 {
                     columnsList
                         .filter(column => Boolean(column))
@@ -110,7 +110,7 @@ const DefaultTable = ({ componentID }) => {
                 }
             </TableRow>
         ))
-    ), [ columnsList, page, rowsPerPage ]);
+    ), [ columnsList, globalStyles, page, rowsPerPage ]);
 
     let startX, startY, startWidth, startHeight;
     const paperRef = useRef(null);

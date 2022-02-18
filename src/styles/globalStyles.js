@@ -23,5 +23,10 @@ export const useGlobalStyles = makeStyles(theme => ({
             opacity: '1 !important',
             fontSize: '1.3rem'
         }
+    },
+    tableRow: {
+        '&:nth-child(even)': {
+            backgroundColor: 'rgb(30 64 175 / 5%)'
+        }
     }
 }));

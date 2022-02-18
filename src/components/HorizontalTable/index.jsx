@@ -94,7 +94,7 @@ const DefaultTable = ({ componentID }) => {
         const list = data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage);
         return isFirstRender.current ? emptyTable : (
             columnsList.map((column, columnIndex) => (
-                <TableRow key={columnIndex}>
+                <TableRow key={columnIndex} className={classNames(globalStyles.tableRow)}>
                     <TableCell 
                         align="center"
                         className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50`)}
