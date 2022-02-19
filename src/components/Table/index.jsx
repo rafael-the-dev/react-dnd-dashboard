@@ -48,14 +48,14 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
         []
     );
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = useCallback((event, newPage) => {
         setPage(newPage);
-    };
+    }, []);
 
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = useCallback((event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    };
+    }, []);
 
     const removeHeader = useCallback(prop => () => {
         setColumnsList(list => {
@@ -105,73 +105,3 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
 };
 
 export default DefaultTable;
-
-/**
- * <Table 
-                        aria-label="table"
-                        sx={{ minWidth: 50 }}
-                        ref={drop}>
-                        <TableHead>
-                            { columnsListMemo }
-                        </TableHead>
-                        <TableBody>
-                            { rowsList }
-                        </TableBody>
-                    </Table>
-
-                    
-                /*if(item.type === ItemTypes.HORIZONTAL_TABLE) {
-                    setColumnsList(item.columns);
-                } else if(Boolean(item.column)) {
-                    setColumnsList(list => {
-                        return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
-                    });
-
-                }
-
-
-
-                    const columnsListMemo = useMemo(() => (
-        <TableRow>
-            {
-                columnsList.map((column, index) => (
-                    <TableCell 
-                        align="center" 
-                        className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50`)}
-                        key={nextId('vth')}>
-                        <div className={classNames(`flex items-center justify-center`)}>
-                            { column }
-                            { 
-                                Boolean(column) && <IconButton 
-                                    className={classNames(`ml-2 text-red-600 p-0 opacity-0 table__header-button`)}
-                                    onClick={removeHeader(column)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            }
-                        </div>
-                    </TableCell>
-                ))
-            }
-        </TableRow>
-    ), [ columnsList, globalStyles, removeHeader ]);
-
-    const rowsList = useMemo(() => (
-        isFirstRender.current ? [] : data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
-            <TableRow key={index} className={classNames(globalStyles.tableRow)}>
-                {
-                    columnsList
-                        .filter(column => Boolean(column))
-                        .map((column) => (
-                            <TableCell 
-                                align="center"
-                                key={nextId('vt')}>
-                                { row[column] }
-                            </TableCell>
-                        )
-                    )
-                }
-            </TableRow>
-        ))
-    ), [ columnsList, globalStyles, page, rowsPerPage ]);
- * 
- */

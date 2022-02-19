@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 import { useStyles } from './styles'
 import Table from '../../components/Table'
-import HorizontalTable from '../../components/HorizontalTable'
 import { useGlobalStyles } from '../../styles';
 import { useDrop } from 'react-dnd'
 import { ItemTypes } from '../../config'
-import { useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AreaChart from '../../components/AreaChart'
