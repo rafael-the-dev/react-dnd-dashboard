@@ -9,6 +9,7 @@ import { useMemo, useRef, useState } from 'react'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AreaChart from '../../components/AreaChart'
+import LineChart from '../../components/LineChart'
 import nextId from "react-id-generator";
 
 const Home = () => {
@@ -32,7 +33,7 @@ const Home = () => {
 
     const [, drop] = useDrop(
         () => ({
-            accept: [ ItemTypes.CHART, ItemTypes.TABLE ],
+            accept: [ ItemTypes.LINE_CHART, ItemTypes.CHART, ItemTypes.TABLE ],
             drop: (item) => {
                 setComponents(list => {
                     const id = nextId();
@@ -42,6 +43,8 @@ const Home = () => {
                         return [ ...list, <HorizontalTable componentID={id} key={id} />]
                     } else if(item.type === ItemTypes.AREA_CHART) {
                         return [ ...list, <AreaChart componentID={id} key={id} /> ]
+                    } else if(item.type === ItemTypes.LINE_CHART) {
+                        return [ ...list, <LineChart componentID={id} key={id} /> ]
                     }
 
                     return list;
