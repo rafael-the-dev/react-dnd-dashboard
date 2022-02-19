@@ -1,24 +1,17 @@
 import { useDrag, useDrop } from 'react-dnd'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { ItemTypes } from '../../config'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import data from '../../sales.json'
 import classNames from 'classnames'
-import { IconButton, TablePagination } from '@mui/material';
-import { useGlobalStyles } from '../../styles'
-import nextId from "react-id-generator";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { TablePagination } from '@mui/material';
+//import { useGlobalStyles } from '../../styles'
 import VerticalTable from './VerticalTable'
 import HorizontalTable from './HorizontalTable'
+import Container from '../Container'
 
 const DefaultTable = ({ componentID, isHorizontalTable }) => {
-    const globalStyles = useGlobalStyles();
+    //const globalStyles = useGlobalStyles();
 
     const [ columnsList, setColumnsList ] = useState(['', '', '']);
     const isFirstRender = useRef(true);
@@ -71,33 +64,8 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
         });
     }, []);
 
-    let startX, startY, startWidth, startHeight;
-    const paperRef = useRef(null);
-
-    const initDrag = (e) => {
-        startX = e.clientX;
-        startY = e.clientY;
-        startWidth = parseInt(document.defaultView.getComputedStyle(paperRef.current).width, 10);
-        startHeight = parseInt(document.defaultView.getComputedStyle(paperRef.current).height, 10);
-        document.documentElement.addEventListener('mousemove', doDrag, false);
-        document.documentElement.addEventListener('mouseup', stopDrag, false);
-    };
-
-    const doDrag = (e) => {
-        paperRef.current.style.width = (startWidth + e.clientX - startX) + 'px';
-        paperRef.current.style.height = (startHeight + e.clientY - startY) + 'px';
-    }
-     
-    const stopDrag = (e) => {
-        document.documentElement.removeEventListener('mousemove', doDrag, false);    
-        document.documentElement.removeEventListener('mouseup', stopDrag, false);
-    }
-
     return (
-        <Paper 
-            className={classNames(`w-fit max-w-full mb-6 mr-6 relative`)}
-            elevation={0}
-            ref={paperRef}>
+        <Container>
             <div ref={drag} className={classNames(`w-full h-full flex flex-col items-stretch`)}>
                 <TableContainer 
                     className={classNames(``)}
@@ -132,10 +100,7 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </div>
-            <div 
-                className={classNames(globalStyles.resizer)}
-                onMouseDown={initDrag}></div>
-        </Paper>
+        </Container>
     );
 };
 
