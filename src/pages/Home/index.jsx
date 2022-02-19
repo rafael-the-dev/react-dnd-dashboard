@@ -36,7 +36,7 @@ const Home = () => {
 
     const [, drop] = useDrop(
         () => ({
-            accept: [ ItemTypes.BAR_CHART, ItemTypes.CHART,  ItemTypes.LINE_CHART, ItemTypes.PIE_CHART, ItemTypes.TABLE ],
+            accept: [ ItemTypes.CHART, ItemTypes.TABLE ],
             drop: (item) => {
                 setComponents(list => {
                     const id = nextId();
