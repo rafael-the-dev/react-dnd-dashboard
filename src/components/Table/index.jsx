@@ -14,8 +14,9 @@ import { IconButton, TablePagination } from '@mui/material';
 import { useGlobalStyles } from '../../styles'
 import nextId from "react-id-generator";
 import DeleteIcon from '@mui/icons-material/Delete';
+import VerticalTable from './VerticalTable'
 
-const DefaultTable = ({ componentID }) => {
+const DefaultTable = ({ componentID, isHorizontalTable }) => {
     const globalStyles = useGlobalStyles();
 
     const [ columnsList, setColumnsList ] = useState(['', '', '']);
@@ -143,17 +144,14 @@ const DefaultTable = ({ componentID }) => {
                 <TableContainer 
                     className={classNames(``)}
                     >
-                    <Table 
-                        aria-label="table"
-                        sx={{ minWidth: 50 }}
-                        ref={drop}>
-                        <TableHead>
-                            { columnsListMemo }
-                        </TableHead>
-                        <TableBody>
-                            { rowsList }
-                        </TableBody>
-                    </Table>
+                    <VerticalTable 
+                        columnsList={columnsList}
+                        isFirstRender={isFirstRender}
+                        page={page}
+                        ref={drop}
+                        removeHeader={removeHeader}
+                        rowsPerPage={rowsPerPage}
+                    />
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
@@ -173,3 +171,18 @@ const DefaultTable = ({ componentID }) => {
 };
 
 export default DefaultTable;
+
+/**
+ * <Table 
+                        aria-label="table"
+                        sx={{ minWidth: 50 }}
+                        ref={drop}>
+                        <TableHead>
+                            { columnsListMemo }
+                        </TableHead>
+                        <TableBody>
+                            { rowsList }
+                        </TableBody>
+                    </Table>
+ * 
+ */
