@@ -42,7 +42,7 @@ const HorizontalTable = forwardRef(({ columnsList, isFirstRender, page, removeHe
                         align="center"
                         className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50`)}
                         key={columnIndex}>
-                        <div classNames={classNames(`flex items-center justify-center`)}>
+                        <div className={classNames(`flex items-center justify-center`)}>
                             { column }
                             { 
                                 Boolean(column) && <IconButton 
