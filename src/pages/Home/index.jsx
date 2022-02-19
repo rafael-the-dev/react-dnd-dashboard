@@ -41,9 +41,9 @@ const Home = () => {
                 setComponents(list => {
                     const id = nextId();
                     if(item.type === 'vertical-table') {
-                        return [ ...list, <Table componentID={id} key={id} />]
+                        return [ ...list, <Table componentID={id} isHorizontalTable={false} key={id} />]
                     } else if(item.type === 'horizontal-table'){
-                        return [ ...list, <HorizontalTable componentID={id} key={id} />]
+                        return [ ...list, <Table componentID={id} isHorizontalTable={true} key={id} />]
                     } else if(item.type === ItemTypes.AREA_CHART) {
                         return [ ...list, <AreaChart componentID={id} key={id} /> ]
                     } else if(item.type === ItemTypes.LINE_CHART) {

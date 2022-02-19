@@ -15,6 +15,7 @@ import { useGlobalStyles } from '../../styles'
 import nextId from "react-id-generator";
 import DeleteIcon from '@mui/icons-material/Delete';
 import VerticalTable from './VerticalTable'
+import HorizontalTable from './HorizontalTable'
 
 const DefaultTable = ({ componentID, isHorizontalTable }) => {
     const globalStyles = useGlobalStyles();
@@ -25,7 +26,7 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
     const [ page, setPage ] = useState(0);
 
     const [ , drag ] = useDrag(() => ({
-        type: ItemTypes.VERTICAL_TABLE,
+        type: isHorizontalTable ? ItemTypes.HORIZONTAL_TABLE : ItemTypes.VERTICAL_TABLE,
         item: { columns: columnsList, componentID, type: ItemTypes.VERTICAL_TABLE },
         collect: (monitor) => ({
           isDragging: !!monitor.isDragging()
@@ -34,17 +35,17 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
 
     const [, drop] = useDrop(
         () => ({
-            accept: [ ItemTypes.SALE_COLUMN, ItemTypes.HORIZONTAL_TABLE ],
+            accept: [ ItemTypes.SALE_COLUMN, isHorizontalTable ? ItemTypes.VERTICAL_TABLE : ItemTypes.HORIZONTAL_TABLE ],
             drop: (item) => {
                 console.log(item);
                 isFirstRender.current = false;
-                if(item.type === ItemTypes.HORIZONTAL_TABLE) {
-                    setColumnsList(item.columns);
-                } else if(Boolean(item.column)) {
+
+                if(Boolean(item.column)) {
                     setColumnsList(list => {
                         return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
                     });
-
+                } else {
+                    setColumnsList(item.columns);
                 }
             },
             collect: (monitor) => ({
@@ -70,7 +71,102 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
         });
     }, []);
 
-    const columnsListMemo = useMemo(() => (
+    let startX, startY, startWidth, startHeight;
+    const paperRef = useRef(null);
+
+    const initDrag = (e) => {
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(paperRef.current).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(paperRef.current).height, 10);
+        document.documentElement.addEventListener('mousemove', doDrag, false);
+        document.documentElement.addEventListener('mouseup', stopDrag, false);
+    };
+
+    const doDrag = (e) => {
+        paperRef.current.style.width = (startWidth + e.clientX - startX) + 'px';
+        paperRef.current.style.height = (startHeight + e.clientY - startY) + 'px';
+    }
+     
+    const stopDrag = (e) => {
+        document.documentElement.removeEventListener('mousemove', doDrag, false);    
+        document.documentElement.removeEventListener('mouseup', stopDrag, false);
+    }
+
+    return (
+        <Paper 
+            className={classNames(`w-fit max-w-full mb-6 mr-6 relative`)}
+            elevation={0}
+            ref={paperRef}>
+            <div ref={drag} className={classNames(`w-full h-full flex flex-col items-stretch`)}>
+                <TableContainer 
+                    className={classNames(``)}
+                    >
+                    { isHorizontalTable ? (
+                        <HorizontalTable 
+                            columnsList={columnsList}
+                            isFirstRender={isFirstRender}
+                            page={page}
+                            ref={drop}
+                            removeHeader={removeHeader}
+                            rowsPerPage={rowsPerPage}
+                        />
+                    ) : (
+                        <VerticalTable 
+                            columnsList={columnsList}
+                            isFirstRender={isFirstRender}
+                            page={page}
+                            ref={drop}
+                            removeHeader={removeHeader}
+                            rowsPerPage={rowsPerPage}
+                        />)
+                    }
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
+                    component="div"
+                    count={data.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+            <div 
+                className={classNames(globalStyles.resizer)}
+                onMouseDown={initDrag}></div>
+        </Paper>
+    );
+};
+
+export default DefaultTable;
+
+/**
+ * <Table 
+                        aria-label="table"
+                        sx={{ minWidth: 50 }}
+                        ref={drop}>
+                        <TableHead>
+                            { columnsListMemo }
+                        </TableHead>
+                        <TableBody>
+                            { rowsList }
+                        </TableBody>
+                    </Table>
+
+                    
+                /*if(item.type === ItemTypes.HORIZONTAL_TABLE) {
+                    setColumnsList(item.columns);
+                } else if(Boolean(item.column)) {
+                    setColumnsList(list => {
+                        return list.includes(item.column) ? list : [ ...list.filter(item => Boolean(item)), item.column ];
+                    });
+
+                }
+
+
+
+                    const columnsListMemo = useMemo(() => (
         <TableRow>
             {
                 columnsList.map((column, index) => (
@@ -112,77 +208,5 @@ const DefaultTable = ({ componentID, isHorizontalTable }) => {
             </TableRow>
         ))
     ), [ columnsList, globalStyles, page, rowsPerPage ]);
-
-    let startX, startY, startWidth, startHeight;
-    const paperRef = useRef(null);
-
-    const initDrag = (e) => {
-        startX = e.clientX;
-        startY = e.clientY;
-        startWidth = parseInt(document.defaultView.getComputedStyle(paperRef.current).width, 10);
-        startHeight = parseInt(document.defaultView.getComputedStyle(paperRef.current).height, 10);
-        document.documentElement.addEventListener('mousemove', doDrag, false);
-        document.documentElement.addEventListener('mouseup', stopDrag, false);
-    };
-
-    const doDrag = (e) => {
-        paperRef.current.style.width = (startWidth + e.clientX - startX) + 'px';
-        paperRef.current.style.height = (startHeight + e.clientY - startY) + 'px';
-    }
-     
-    const stopDrag = (e) => {
-        document.documentElement.removeEventListener('mousemove', doDrag, false);    
-        document.documentElement.removeEventListener('mouseup', stopDrag, false);
-    }
-
-    return (
-        <Paper 
-            className={classNames(`w-fit max-w-full mb-6 mr-6 relative`)}
-            elevation={0}
-            ref={paperRef}>
-            <div ref={drag} className={classNames(`w-full h-full flex flex-col items-stretch`)}>
-                <TableContainer 
-                    className={classNames(``)}
-                    >
-                    <VerticalTable 
-                        columnsList={columnsList}
-                        isFirstRender={isFirstRender}
-                        page={page}
-                        ref={drop}
-                        removeHeader={removeHeader}
-                        rowsPerPage={rowsPerPage}
-                    />
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 7, 10, 15, 25, 30]}
-                    component="div"
-                    count={data.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </div>
-            <div 
-                className={classNames(globalStyles.resizer)}
-                onMouseDown={initDrag}></div>
-        </Paper>
-    );
-};
-
-export default DefaultTable;
-
-/**
- * <Table 
-                        aria-label="table"
-                        sx={{ minWidth: 50 }}
-                        ref={drop}>
-                        <TableHead>
-                            { columnsListMemo }
-                        </TableHead>
-                        <TableBody>
-                            { rowsList }
-                        </TableBody>
-                    </Table>
  * 
  */

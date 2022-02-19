@@ -7,18 +7,42 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import data from '../../../sales.json'
 
 
-const VerticalTable = forwardRef(({ columnsList, isFirstRender, page, removeHeader, rowsPerPage }, ref) => {
+const HorizontalTable = forwardRef(({ columnsList, isFirstRender, page, removeHeader, rowsPerPage }, ref) => {
     const globalStyles = useGlobalStyles();
 
-    const columnsListMemo = useMemo(() => (
-        <TableRow>
-            {
-                columnsList.map((column, index) => (
+    const emptyTable = useMemo(() => (
+        <>
+            <TableRow>
+                <TableCell 
+                    align="center"
+                    className={classNames(`bg-blue-800 text-slate-50`)}>
+                </TableCell>
+                <TableCell 
+                    align="center">
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell 
+                    align="center"
+                    className={classNames(`bg-blue-800 text-slate-50`)}>
+                </TableCell>
+                <TableCell 
+                    align="center">
+                </TableCell>
+            </TableRow>
+        </>
+    ), []);
+
+    const rowsList = useMemo(() => {
+        const list = data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage);
+        return isFirstRender.current ? emptyTable : (
+            columnsList.map((column, columnIndex) => (
+                <TableRow key={columnIndex} className={classNames(globalStyles.tableRow)}>
                     <TableCell 
-                        align="center" 
+                        align="center"
                         className={classNames(globalStyles.tableHeader, `bg-blue-800 text-slate-50`)}
-                        key={nextId('vth')}>
-                        <div className={classNames(`flex items-center justify-center`)}>
+                        key={columnIndex}>
+                        <div classNames={classNames(`flex items-center justify-center`)}>
                             { column }
                             { 
                                 Boolean(column) && <IconButton 
@@ -29,38 +53,41 @@ const VerticalTable = forwardRef(({ columnsList, isFirstRender, page, removeHead
                             }
                         </div>
                     </TableCell>
+                    {
+                        Boolean(column) && list.map((row, index) => (
+                            <TableCell 
+                                align="center"
+                                key={nextId('hz')}>
+                                { row[column] }
+                            </TableCell>
+                        ))
+                    }
+                </TableRow>
+            )
+        ))
+    }, [ columnsList, emptyTable, globalStyles, isFirstRender, page, removeHeader, rowsPerPage ])
+
+    data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
+        <TableRow key={index}>
+            {
+                columnsList
+                .filter(column => Boolean(column))
+                .map((column, columnIndex) => (
+                    <TableCell 
+                        align="center"
+                        key={`${index}${columnIndex}`}>
+                        { row[column] }
+                    </TableCell>
                 ))
             }
         </TableRow>
-    ), [ columnsList, globalStyles, removeHeader ]);
-
-    const rowsList = useMemo(() => (
-        isFirstRender.current ? [] : data.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => (
-            <TableRow key={index} className={classNames(globalStyles.tableRow)}>
-                {
-                    columnsList
-                        .filter(column => Boolean(column))
-                        .map((column) => (
-                            <TableCell 
-                                align="center"
-                                key={nextId('vt')}>
-                                { row[column] }
-                            </TableCell>
-                        )
-                    )
-                }
-            </TableRow>
-        ))
-    ), [ columnsList, globalStyles, isFirstRender, page, rowsPerPage ]);
+    ));
 
     return (
         <Table 
             aria-label="table"
             sx={{ minWidth: 50 }}
             ref={ref}>
-            <TableHead>
-                { columnsListMemo }
-            </TableHead>
             <TableBody>
                 { rowsList }
             </TableBody>
@@ -68,4 +95,4 @@ const VerticalTable = forwardRef(({ columnsList, isFirstRender, page, removeHead
     );
 });
 
-export default VerticalTable;
+export default HorizontalTable;
