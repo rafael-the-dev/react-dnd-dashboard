@@ -9,6 +9,7 @@ import { useMemo, useRef, useState } from 'react'
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AreaChart from '../../components/AreaChart'
+import BarChart from '../../components/BarChart'
 import LineChart from '../../components/LineChart'
 import nextId from "react-id-generator";
 
@@ -19,7 +20,7 @@ const Home = () => {
 
     const [, deleteDropRef ] = useDrop(
         () => ({
-            accept: [ ItemTypes.AREA_CHART, ItemTypes.HORIZONTAL_TABLE, ItemTypes.VERTICAL_TABLE ],
+            accept: [ ItemTypes.AREA_CHART, ItemTypes.BAR_CHART, ItemTypes.HORIZONTAL_TABLE, ItemTypes.LINE_CHART, ItemTypes.VERTICAL_TABLE ],
             drop: (item) => {
                 console.log(item)
                 setComponents(list => list.filter(element => element.key !== item.componentID))
@@ -33,7 +34,7 @@ const Home = () => {
 
     const [, drop] = useDrop(
         () => ({
-            accept: [ ItemTypes.LINE_CHART, ItemTypes.CHART, ItemTypes.TABLE ],
+            accept: [ ItemTypes.BAR_CHART, ItemTypes.CHART,  ItemTypes.LINE_CHART, ItemTypes.TABLE ],
             drop: (item) => {
                 setComponents(list => {
                     const id = nextId();
@@ -45,6 +46,8 @@ const Home = () => {
                         return [ ...list, <AreaChart componentID={id} key={id} /> ]
                     } else if(item.type === ItemTypes.LINE_CHART) {
                         return [ ...list, <LineChart componentID={id} key={id} /> ]
+                    } else if(item.type === ItemTypes.BAR_CHART) {
+                        return [ ...list, <BarChart componentID={id} key={id} /> ]
                     }
 
                     return list;

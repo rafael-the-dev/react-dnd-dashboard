@@ -1,5 +1,6 @@
 export const ItemTypes = {
     AREA_CHART: 'area-chart',
+    BAR_CHART: 'bar-chart',
     CHART: 'chart',
     HORIZONTAL_TABLE: 'horizontal-table',
     LINE_CHART: 'line-chart',
