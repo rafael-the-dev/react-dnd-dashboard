@@ -9,7 +9,7 @@ const ChartTab = ({ label, tabID, openedTab, tabClickHanlder }) => {
 
     return (
         <Button
-            className={classNames(classes.defaultButton, `border-0 rounded-none py-2.5 sm:shadow-none sm:w-auto`)}
+            className={classNames(classes.defaultButton, `mb-2.5 border-0 rounded-none py-2.5 sm:shadow-none sm:w-auto`)}
             endIcon={<KeyboardArrowDownIcon className={classNames({'rotate-180': openedTab === tabID })} />}
             onClick={tabClickHanlder(tabID)}
             variant="contained">

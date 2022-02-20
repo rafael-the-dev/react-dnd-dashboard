@@ -11,7 +11,7 @@ import ChartTab from './ChartTab'
 
 const ChartContainer = ({ chartType, componentID }) => {
     const [ open, setOpen ] = useState('');
-    const tabClickHanlder = useCallback(prop => () => setOpen(prop), []);
+    const tabClickHanlder = useCallback(prop => () => setOpen(oldState => oldState === prop ? '' : prop), []);
     const chartTypes = useMemo(() => ({
         area: {
             component: <AreaChartContainer />,
@@ -37,7 +37,7 @@ const ChartContainer = ({ chartType, componentID }) => {
 
     return (
         <Container>
-            <div className={classNames(`pl-3 py-4 w-full flex items-stretch justify-start`)}>
+            <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
                 <ChartTab 
                     label="X axe"
                     tabID="x-axe"
@@ -57,6 +57,7 @@ const ChartContainer = ({ chartType, componentID }) => {
                     tabClickHanlder={tabClickHanlder}
                 />
             </div>
+            <div></div>
             <ResponsiveContainer ref={drag} width="100%" height="90%">
                 { chartTypes[chartType].component }
             </ResponsiveContainer>
