@@ -11,6 +11,7 @@ import AreaChart from '../../components/AreaChart'
 import BarChart from '../../components/BarChart'
 import LineChart from '../../components/LineChart'
 import PieChart from '../../components/PieChart'
+import ChartContainer from '../../components/ChartContainer'
 import nextId from "react-id-generator";
 
 const Home = () => {
@@ -44,13 +45,13 @@ const Home = () => {
                     } else if(item.type === 'horizontal-table'){
                         return [ ...list, <Table componentID={id} isHorizontalTable={true} key={id} />]
                     } else if(item.type === ItemTypes.AREA_CHART) {
-                        return [ ...list, <AreaChart componentID={id} key={id} /> ]
+                        return [ ...list, <ChartContainer chartType="area" componentID={id} key={id} /> ]
                     } else if(item.type === ItemTypes.LINE_CHART) {
-                        return [ ...list, <LineChart componentID={id} key={id} /> ]
+                        return [ ...list, <ChartContainer chartType="line" componentID={id} key={id} /> ]
                     } else if(item.type === ItemTypes.BAR_CHART) {
-                        return [ ...list, <BarChart componentID={id} key={id} /> ]
+                        return [ ...list, <ChartContainer chartType="bar" componentID={id} key={id} /> ]
                     } else if(item.type === ItemTypes.PIE_CHART) {
-                        return [ ...list, <PieChart componentID={id} key={id} /> ]
+                        return [ ...list, <ChartContainer chartType="pie" componentID={id} key={id} /> ]
                     }
 
                     return list;

@@ -36,8 +36,8 @@ const ChartContainer = ({ chartType, componentID }) => {
             <div>
 
             </div>
-            <ResponsiveContainer ref={drag} width="100%" height="100%">
-                { chartTypes[chartType] }
+            <ResponsiveContainer ref={drag} width="100%" height="90%">
+                { chartTypes[chartType].component }
             </ResponsiveContainer>
         </Container>
     );
