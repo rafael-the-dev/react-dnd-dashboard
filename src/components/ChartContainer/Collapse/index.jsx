@@ -23,7 +23,12 @@ const CollapseContainer = ({ axeList, chipDeleteHandler, dropHandler, open, tabI
             accept: [ ItemTypes.SALE_COLUMN, ],
             drop: (item) => {
                 console.log(item);
-                setAxeList(list => [ ...list, item.column ])
+                setAxeList(list => {
+                    if(!list.includes(item.column)) {
+                        return [ ...list, item.column ]
+                    }
+                    return list;
+                })
             },
             collect: (monitor) => ({
                 isOver: !!monitor.isOver()
