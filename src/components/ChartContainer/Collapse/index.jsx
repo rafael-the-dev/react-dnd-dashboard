@@ -1,4 +1,4 @@
-import { Collapse } from '@mui/material';
+import { Collapse, Typography } from '@mui/material';
 import classNames from 'classnames'
 import { useMemo } from 'react';
 import { useGlobalStyles } from '../../../styles';
@@ -12,7 +12,7 @@ const CollapseContainer = ({ axeList, chipDeleteHandler, dropHandler, open, tabI
         axeList.map((item, index) => (
             <AxeChip 
                 deleteHandler={chipDeleteHandler(item, setAxeList)}
-                id={index}
+                key={index}
                 label={item} 
             />
         ))
@@ -35,9 +35,17 @@ const CollapseContainer = ({ axeList, chipDeleteHandler, dropHandler, open, tabI
     return (
         <Collapse in={ tabID === open }>
             <div 
-                className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-3`)}
+                className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center px-3`,
+                { ' pt-4 pb-2': axeList.length > 0, 'py-6': axeList.length === 0})}
                 ref={drop}>
-                { columnsList }
+                { axeList.length > 0 ? columnsList : (
+                    <Typography
+                        className={classNames(`font-bold`)}
+                        component="h2"
+                        variant="h5">
+                        Drag and drop columns here
+                    </Typography>
+                )}
             </div>
         </Collapse>
     );
