@@ -38,7 +38,7 @@ const CollapseContainer = ({ axeList, chipDeleteHandler, dropHandler, open, tabI
     );
 
     return (
-        <Collapse in={ tabID === open }>
+        <Collapse in={ tabID === open } className={classNames({ [globalStyles.collapse]: tabID === open })}>
             <div 
                 className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center px-3`,
                 { ' pt-4 pb-2': axeList.length > 0, 'py-6': axeList.length === 0})}

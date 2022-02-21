@@ -86,7 +86,7 @@ const ChartContainer = ({ chartType, componentID }) => {
                     tabID="y-axe" 
                     setAxeList={setYAxeList} 
                 />
-                <Collapse in={ 'agreggations' === open }>
+                <Collapse in={ 'agreggations' === open }  className={classNames({ [globalStyles.collapse]: 'agreggations' === open })}>
                     <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
                         sm:justify-end`)}>
                         { createXAxeColumns() }

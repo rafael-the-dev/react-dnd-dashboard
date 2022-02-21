@@ -34,5 +34,8 @@ export const useGlobalStyles = makeStyles(theme => ({
         '&:nth-child(even)': {
             backgroundColor: 'rgb(30 64 175 / 5%)'
         }
+    },
+    collapse: {
+        minHeight: 'fit-content !important'
     }
 }));
