@@ -93,7 +93,7 @@ const ChartContainer = ({ chartType, componentID }) => {
                     </div>
                 </Collapse>
                 <div className={classNames(`grow`)}>
-                        { chartTypes[chartType].component }
+                    { chartTypes[chartType].component }
                 </div>
             </div>
         </Container>
