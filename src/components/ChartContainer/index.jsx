@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import ChartTab from './ChartTab'
 import { useGlobalStyles } from '../../styles';
 import { Collapse } from '@mui/material';
+import ColumnsCollapse from './Collapse'
 
 const ChartContainer = ({ chartType, componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -64,18 +65,8 @@ const ChartContainer = ({ chartType, componentID }) => {
                     tabClickHanlder={tabClickHanlder}
                 />
             </div>
-            <Collapse in={ 'x-axe' === open }>
-                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
-                    sm:justify-end`)}>
-                    { createXAxeColumns }
-                </div>
-            </Collapse>
-            <Collapse in={ 'y-axe' === open }>
-                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
-                    sm:justify-end`)}>
-                    { createXAxeColumns }
-                </div>
-            </Collapse>
+            <ColumnsCollapse open={open} />
+            <ColumnsCollapse open={open} />
             <Collapse in={ 'agreggations' === open }>
                 <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
                     sm:justify-end`)}>
