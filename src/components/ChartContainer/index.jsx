@@ -51,7 +51,7 @@ const ChartContainer = ({ chartType, componentID }) => {
 
     return (
         <Container canIAddMinSizes={true}>
-            <div ref={drag} className={classNames(`flex flex-col items-stretch w-full h-full`)}>
+            <div ref={drag} className={classNames(`flex flex-col items-stretch w-full h-full pt-2`)}>
                 <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
                     <ChartTab 
                         label="X axe"

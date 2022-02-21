@@ -20,7 +20,7 @@ const LineChartContainer = ({ componentID }) => {
                     top: 10,
                     right: 30,
                     left: 0,
-                    bottom: 0,
+                    bottom: 32,
                 }}
                 >
                 <CartesianGrid strokeDasharray="3 3" />
