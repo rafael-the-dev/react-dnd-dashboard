@@ -8,10 +8,15 @@ import { useDrag } from 'react-dnd'
 import { ItemTypes } from '../../config'
 import classNames from 'classnames'
 import ChartTab from './ChartTab'
+import { useGlobalStyles } from '../../styles';
+import { Collapse } from '@mui/material';
 
 const ChartContainer = ({ chartType, componentID }) => {
+    const globalStyles = useGlobalStyles();
+
     const [ open, setOpen ] = useState('');
     const tabClickHanlder = useCallback(prop => () => setOpen(oldState => oldState === prop ? '' : prop), []);
+    
     const chartTypes = useMemo(() => ({
         area: {
             component: <AreaChartContainer />,
@@ -35,6 +40,8 @@ const ChartContainer = ({ chartType, componentID }) => {
         })
     }), [ componentID ]);
 
+    const createXAxeColumns = useCallback(() => (<></>), []);
+
     return (
         <Container>
             <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
@@ -57,7 +64,24 @@ const ChartContainer = ({ chartType, componentID }) => {
                     tabClickHanlder={tabClickHanlder}
                 />
             </div>
-            <div></div>
+            <Collapse in={ 'x-axe' === open }>
+                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
+                    sm:justify-end`)}>
+                    { createXAxeColumns }
+                </div>
+            </Collapse>
+            <Collapse in={ 'y-axe' === open }>
+                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
+                    sm:justify-end`)}>
+                    { createXAxeColumns }
+                </div>
+            </Collapse>
+            <Collapse in={ 'agreggations' === open }>
+                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
+                    sm:justify-end`)}>
+                    { createXAxeColumns }
+                </div>
+            </Collapse>
             <ResponsiveContainer ref={drag} width="100%" height="90%">
                 { chartTypes[chartType].component }
             </ResponsiveContainer>
