@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useRef } from 'react'
 import { useGlobalStyles } from '../../styles'
 
-const Container = ({ children }) => {
+const Container = ({ children, canIAddMinSizes }) => {
     const globalStyles = useGlobalStyles();
 
     let startX, startY, startWidth, startHeight;
@@ -32,7 +32,8 @@ const Container = ({ children }) => {
         <Paper 
             className={classNames(`w-fit max-w-full mb-6 mr-6 relative`)}
             elevation={0}
-            ref={paperRef}>
+            ref={paperRef}
+            style={{ height: canIAddMinSizes ? 260 : 120 }}>
             { children }
             <div 
                 className={classNames(globalStyles.resizer)}

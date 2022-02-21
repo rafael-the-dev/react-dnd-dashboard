@@ -47,53 +47,55 @@ const ChartContainer = ({ chartType, componentID }) => {
         })
     }), [ componentID ]);
 
-    const createXAxeColumns = useCallback(() => (<></>), []);
+    const createXAxeColumns = useCallback(() => <></>, []);
 
     return (
-        <Container>
-            <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
-                <ChartTab 
-                    label="X axe"
-                    tabID="x-axe"
-                    openedTab={open}
-                    tabClickHanlder={tabClickHanlder}
-                />
-                <ChartTab 
-                    label="Y axe"
-                    tabID="y-axe"
-                    openedTab={open}
-                    tabClickHanlder={tabClickHanlder}
-                />
-                <ChartTab 
-                    label="Agreggations"
-                    tabID="agreggations"
-                    openedTab={open}
-                    tabClickHanlder={tabClickHanlder}
-                />
-            </div>
-            <ColumnsCollapse 
-                axeList={xAxeList} 
-                chipDeleteHandler={axeItemDeleteHandler}
-                open={open}  
-                tabID="x-axe" 
-                setAxeList={setXAxeList} 
-            />
-            <ColumnsCollapse 
-                axeList={yAxeList} 
-                chipDeleteHandler={axeItemDeleteHandler}
-                open={open} 
-                tabID="y-axe" 
-                setAxeList={setYAxeList} 
-            />
-            <Collapse in={ 'agreggations' === open }>
-                <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
-                    sm:justify-end`)}>
-                    { createXAxeColumns }
+        <Container canIAddMinSizes={true}>
+            <div ref={drag} className={classNames(`flex flex-col items-stretch w-full h-full`)}>
+                <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
+                    <ChartTab 
+                        label="X axe"
+                        tabID="x-axe"
+                        openedTab={open}
+                        tabClickHanlder={tabClickHanlder}
+                    />
+                    <ChartTab 
+                        label="Y axe"
+                        tabID="y-axe"
+                        openedTab={open}
+                        tabClickHanlder={tabClickHanlder}
+                    />
+                    <ChartTab 
+                        label="Agreggations"
+                        tabID="agreggations"
+                        openedTab={open}
+                        tabClickHanlder={tabClickHanlder}
+                    />
                 </div>
-            </Collapse>
-            <ResponsiveContainer ref={drag} width="100%" height="90%">
-                { chartTypes[chartType].component }
-            </ResponsiveContainer>
+                <ColumnsCollapse 
+                    axeList={xAxeList} 
+                    chipDeleteHandler={axeItemDeleteHandler}
+                    open={open}  
+                    tabID="x-axe" 
+                    setAxeList={setXAxeList} 
+                />
+                <ColumnsCollapse 
+                    axeList={yAxeList} 
+                    chipDeleteHandler={axeItemDeleteHandler}
+                    open={open} 
+                    tabID="y-axe" 
+                    setAxeList={setYAxeList} 
+                />
+                <Collapse in={ 'agreggations' === open }>
+                    <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
+                        sm:justify-end`)}>
+                        { createXAxeColumns() }
+                    </div>
+                </Collapse>
+                <div className={classNames(`grow`)}>
+                        { chartTypes[chartType].component }
+                </div>
+            </div>
         </Container>
     );
 };

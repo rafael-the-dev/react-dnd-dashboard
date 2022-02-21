@@ -5,6 +5,9 @@ export const useGlobalStyles = makeStyles(theme => ({
         paddingLeft: '5%',
         paddingRight: '5%',
     },
+    chartsContainer: {
+        minHeight: 260
+    },
     chipsContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.08)'
     },
