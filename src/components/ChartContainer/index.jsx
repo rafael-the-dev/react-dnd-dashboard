@@ -16,7 +16,13 @@ const ChartContainer = ({ chartType, componentID }) => {
     const globalStyles = useGlobalStyles();
 
     const [ open, setOpen ] = useState('');
+    const [ xAxeList, setXAxeList ] = useState([])
+    const [ yAxeList, setYAxeList ] = useState([])
+
     const tabClickHanlder = useCallback(prop => () => setOpen(oldState => oldState === prop ? '' : prop), []);
+    const axeItemDeleteHandler = useCallback((id, func) => () => {
+        func(list => list.filter(item => item !== id));
+    }, []);
     
     const chartTypes = useMemo(() => ({
         area: {
@@ -65,8 +71,20 @@ const ChartContainer = ({ chartType, componentID }) => {
                     tabClickHanlder={tabClickHanlder}
                 />
             </div>
-            <ColumnsCollapse open={open} />
-            <ColumnsCollapse open={open} />
+            <ColumnsCollapse 
+                axeList={xAxeList} 
+                chipDeleteHandler={axeItemDeleteHandler}
+                open={open}  
+                tabID="x-axe" 
+                setAxeList={setXAxeList} 
+            />
+            <ColumnsCollapse 
+                axeList={yAxeList} 
+                chipDeleteHandler={axeItemDeleteHandler}
+                open={open} 
+                tabID="y-axe" 
+                setAxeList={setYAxeList} 
+            />
             <Collapse in={ 'agreggations' === open }>
                 <div className={classNames(globalStyles.chipsContainer, `flex flex-wrap items-center pt-4 pb-2 px-2.5
                     sm:justify-end`)}>
