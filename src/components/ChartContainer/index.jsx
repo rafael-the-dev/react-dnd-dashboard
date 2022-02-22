@@ -12,6 +12,7 @@ import { useGlobalStyles } from '../../styles';
 import { Collapse } from '@mui/material';
 import ColumnsCollapse from './Collapse'
 import data from '../../sales.json'
+import moment from 'moment';
 
 const ChartContainer = ({ chartType, componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -24,6 +25,32 @@ const ChartContainer = ({ chartType, componentID }) => {
     const axeItemDeleteHandler = useCallback((id, func) => () => {
         func(list => list.filter(item => item !== id));
     }, []);
+
+    const sortedData = useMemo(() => {
+        const sortKey = xAxeList.length > 0 ? xAxeList[0] : 'id';
+        const isDate = moment(data[0][sortKey], 'YYYY-MM-DD', true).isValid();
+        const isString = typeof data[0][sortKey] === 'string';
+
+        const result = data.sort((a, b) => {
+            if(isDate) {
+                return new Date(a[sortKey]) -  new Date(b[sortKey]);
+            } else if(isString) {
+                const nameA = a[sortKey].toLowerCase();
+                const nameB = b[sortKey].toLowerCase();
+
+                if (nameA < nameB)
+                    return -1;
+                
+                if (nameA > nameB)
+                    return 1;
+
+                return 0;
+            }
+            return a[sortKey] - b[sortKey];
+        });
+        
+        return result;
+    }, [ xAxeList ]);
 
     const anylitics = useMemo(() => {
         const map = {
@@ -48,24 +75,24 @@ const ChartContainer = ({ chartType, componentID }) => {
         return map;
     }, []);
 
-    useEffect(() => console.log(anylitics), [ anylitics ]);
+    useEffect(() => console.log(sortedData), [ sortedData ]);
 
     const colors = useMemo(() => [ '#8884d8', '#82ca9d', '#ffc658'], []);
     
     const chartTypes = useMemo(() => ({
         area: {
-            component: <AreaChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
+            component: <AreaChartContainer colors={colors} data={sortedData} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.AREA_CHART
         },
         bar: {
-            component: <BarChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
+            component: <BarChartContainer colors={colors} data={sortedData} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.BAR_CHART
         },
         line: {
-            component: <LineChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
+            component: <LineChartContainer colors={colors} data={sortedData} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.LINE_CHART
         }
-    }), [ colors, xAxeList, yAxeList ]);
+    }), [ colors, sortedData, xAxeList, yAxeList ]);
 
     const [ , drag ] = useDrag(() => ({
         type: chartTypes[chartType].type,

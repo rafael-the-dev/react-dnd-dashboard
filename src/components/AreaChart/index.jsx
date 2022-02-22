@@ -1,15 +1,16 @@
 import { Paper } from '@mui/material';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
-import data from  '../../sales.json'
+//import data from  '../../sales.json'
 import { useGlobalStyles } from '../../styles'
 import classNames from 'classnames'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes } from '../../config'
 import nextId from "react-id-generator";
 
-const AreaChartContainer = ({ componentID, colors, xAxeList, yAxeList }) => {
+const AreaChartContainer = ({ componentID, colors, data, xAxeList, yAxeList }) => {
     const globalStyles = useGlobalStyles();
+    console.log(data)
 
     const index = useRef(0);
 
