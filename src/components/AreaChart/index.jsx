@@ -59,9 +59,9 @@ const AreaChartContainer = ({ componentID, colors, data, xAxeList, yAxeList }) =
                 >
                 <CartesianGrid strokeDasharray="3 3" />
                 <Legend />
-                { xAxe }
                 <Tooltip />
                 <YAxis />
+                { xAxe }
                 { yAxe }
             </AreaChart>
         </ResponsiveContainer>
