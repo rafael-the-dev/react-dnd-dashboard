@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import AreaChartContainer from '../AreaChart';
 import BarChartContainer from '../BarChart';
 import Container from '../Container';
@@ -11,6 +11,7 @@ import ChartTab from './ChartTab'
 import { useGlobalStyles } from '../../styles';
 import { Collapse } from '@mui/material';
 import ColumnsCollapse from './Collapse'
+import data from '../../sales.json'
 
 const ChartContainer = ({ chartType, componentID }) => {
     const globalStyles = useGlobalStyles();
@@ -23,21 +24,48 @@ const ChartContainer = ({ chartType, componentID }) => {
     const axeItemDeleteHandler = useCallback((id, func) => () => {
         func(list => list.filter(item => item !== id));
     }, []);
+
+    const anylitics = useMemo(() => {
+        const map = {
+            x: 1,
+            y: 2,
+            count: 3,
+            min: 5, 
+            max: 7
+        };
+
+        data.forEach(item => {
+            Object.keys(item).forEach(key => {
+                if(Boolean(key)) {
+                    if(Object.keys(map).includes(key)) {
+                        map[key] += 1;
+                    } else {
+                        map[key] = 1;
+                    }
+                }
+            });
+        });
+        return map;
+    }, []);
+
+    useEffect(() => console.log(anylitics), [ anylitics ]);
+
+    const colors = useMemo(() => [ '#8884d8', '#82ca9d', '#ffc658'], []);
     
     const chartTypes = useMemo(() => ({
         area: {
-            component: <AreaChartContainer />,
+            component: <AreaChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.AREA_CHART
         },
         bar: {
-            component: <BarChartContainer />,
+            component: <BarChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.BAR_CHART
         },
         line: {
-            component: <LineChartContainer />,
+            component: <LineChartContainer colors={colors} xAxeList={xAxeList} yAxeList={yAxeList} />,
             type: ItemTypes.LINE_CHART
         }
-    }), []);
+    }), [ colors, xAxeList, yAxeList ]);
 
     const [ , drag ] = useDrag(() => ({
         type: chartTypes[chartType].type,
@@ -51,7 +79,7 @@ const ChartContainer = ({ chartType, componentID }) => {
 
     return (
         <Container canIAddMinSizes={true}>
-            <div ref={drag} className={classNames(`flex flex-col items-stretch w-full h-full pt-2`)}>
+            <div ref={drag} className={classNames(`flex flex-col items-stretch w-full h-full pt-2 overflow-y-auto`)}>
                 <div className={classNames(``)}>
                     <div className={classNames(`pl-3 py-4 w-full flex flex-wrap items-stretch justify-start`)}>
                         <ChartTab 
